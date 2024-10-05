@@ -68,7 +68,7 @@ class FarmersDilemmaEnvironment(Environment):
             self.move(action)
             print(f"Moving {action if action else 'farmer alone'}, the new state is {self.state}")
 
-def main():
+def run_farmers_dilemma():
     states_actions = [
         ({"farmer": "A", "fox": "A", "chicken": "A", "grain": "A"}, "chicken"),
         ({"farmer": "B", "fox": "A", "chicken": "B", "grain": "A"}, ""),
@@ -104,6 +104,4 @@ def main():
 
     print("Done!")
 
-if __name__ == "__main__":
-    main()
-
+run_farmers_dilemma()
