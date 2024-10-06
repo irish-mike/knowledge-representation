@@ -4,7 +4,7 @@ from dataclasses import dataclass
 @dataclass
 class Component:
     name: str
-    status: int = 1  # status is on (1) or off (0)
+    status: int = 1  # status is on (1) or off (0) TODO - Change to bool
 
 # initialize all components with default on status
 components = {
@@ -43,7 +43,7 @@ synth_graph_ideal_path = UndirectedGraph({
 synth_graph_wrong_path = UndirectedGraph({
     'input': {'osc1': 10},
     'osc1': {'mixer1': 5, 'osc2': 10},
-    'osc2': {'mixer1': 5, 'osc3': 10},
+    'osc2': {'osc3': 10, 'mixer1': 5},
     'osc3': {'mixer1': 5},
     'mixer1': {'filter1': 10},
     'filter1': {'adsr': 10, 'filter2': 5},
@@ -69,3 +69,5 @@ synth_graph_dead_end = UndirectedGraph({
     'fx3': {'mixer2': 10},
     'mixer2': {'output': 5}
 })
+
+

@@ -1,4 +1,5 @@
-from pathfinder_synth.synth_agents import get_synth_reflex_agent, get_synth_model_based_agent
+from pathfinder_synth.synth_agents import get_synth_reflex_agent, get_synth_model_based_agent, \
+    get_synth_utility_based_agent
 from pathfinder_synth.synth_enviornment import SynthEnvironment
 from pathfinder_synth.synth_graphs import components, synth_graph_ideal_path, synth_graph_wrong_path, \
     synth_graph_dead_end
@@ -22,3 +23,8 @@ run(synth_graph_dead_end, get_synth_reflex_agent(), "Dead End Graph")
 run(synth_graph_ideal_path, get_synth_model_based_agent(), "Ideal Path")
 run(synth_graph_wrong_path, get_synth_model_based_agent(), "Wrong Path")
 run(synth_graph_dead_end, get_synth_model_based_agent(), "Dead End Graph")
+
+
+run(synth_graph_ideal_path, get_synth_utility_based_agent(synth_graph_ideal_path), "Ideal Path")
+run(synth_graph_wrong_path, get_synth_utility_based_agent(synth_graph_wrong_path), "Wrong Path")
+run(synth_graph_dead_end, get_synth_utility_based_agent(synth_graph_dead_end), "Dead End Graph")
