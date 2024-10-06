@@ -1,30 +1,25 @@
-from pathfinder_synth.synth_agents import get_synth_reflex_agent, get_synth_model_based_agent, \
-    get_synth_utility_based_agent
+from pathfinder_synth.synth_agents import agent_factory
 from pathfinder_synth.synth_enviornment import SynthEnvironment
-from pathfinder_synth.synth_graphs import components, synth_graph_ideal_path, synth_graph_wrong_path, \
-    synth_graph_dead_end
+from pathfinder_synth.synth_graphs import graph_factory
 
-
-def run(graph, agent, graph_name):
-    print(f"\nRunning {agent.__name__} on {graph_name}")
+def run(graph_type, agent, steps=20):
+    print(f"\nRunning {agent.__name__} on {graph_type.replace('_', ' ').title()}")
+    graph = graph_factory(graph_type)
     env = SynthEnvironment(graph)
     env.add_thing(agent)
-    env.run(20)
-
+    env.run(steps)
 
 # Run Reflex Agent
-run(synth_graph_ideal_path, get_synth_reflex_agent(), "Ideal Path")
-run(synth_graph_wrong_path, get_synth_reflex_agent(), "Wrong Path")
-
-components['fx3'].status = 0  # Turn off 'filter3' to create a (dead end)
-run(synth_graph_dead_end, get_synth_reflex_agent(), "Dead End Graph")
+run('ideal_path', agent_factory('Reflex'))
+run('wrong_path', agent_factory('Reflex'))
+run('dead_end', agent_factory('Reflex'))
 
 # Run Model based Agent
-run(synth_graph_ideal_path, get_synth_model_based_agent(), "Ideal Path")
-run(synth_graph_wrong_path, get_synth_model_based_agent(), "Wrong Path")
-run(synth_graph_dead_end, get_synth_model_based_agent(), "Dead End Graph")
+run('ideal_path', agent_factory('Model'))
+run('wrong_path', agent_factory('Model'))
+run('dead_end', agent_factory('Model'))
 
-
-run(synth_graph_ideal_path, get_synth_utility_based_agent(synth_graph_ideal_path), "Ideal Path")
-run(synth_graph_wrong_path, get_synth_utility_based_agent(synth_graph_wrong_path), "Wrong Path")
-run(synth_graph_dead_end, get_synth_utility_based_agent(synth_graph_dead_end), "Dead End Graph")
+# Run Utility based Agent
+run('ideal_path', agent_factory('Utility'))
+run('wrong_path', agent_factory('Utility'))
+run('dead_end', agent_factory('Utility'))
