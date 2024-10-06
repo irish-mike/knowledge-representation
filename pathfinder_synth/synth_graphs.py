@@ -61,7 +61,7 @@ synth_graph_dead_end = UndirectedGraph({
     'osc1': {'osc2': 5, 'mixer1': 15},
     'osc2': {'filter2': 20, 'osc3': 5},
     'osc3': {'mixer1': 5},
-    'mixer1': {'filter1': 10, 'lfo2': 25},
+    'mixer1': {'filter1': 10},
     'filter1': {'adsr': 10},
     'adsr': {'fx1': 10},
     'fx1': {'fx2': 5, 'mixer2': 5},
