@@ -75,5 +75,3 @@ def graph_factory(graph_type):
             'mixer2': {'output': 5}
         })
 
-    else:
-        raise ValueError(f"Unknown graph type: {graph_type}")

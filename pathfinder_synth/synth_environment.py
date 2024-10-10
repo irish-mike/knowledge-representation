@@ -1,6 +1,7 @@
 import random
 
 from aima.agents import Environment
+from pathfinder_synth.synth_graphs import graph_factory, get_components
 
 
 class SynthEnvironment(Environment):
@@ -37,25 +38,18 @@ class SynthEnvironment(Environment):
 
         # If the component is off, the environment won't let the agent through
         if not self.components[component].status:
-            print(f"Component {component} is OFF, Cannot move agent")
-            agent.performance -= 1  # additional penalty for trying to make an invalid move
+            agent.performance -= 5  # additional penalty for trying to make an invalid move
             return
-
-        print(f"Routing signal from {agent.location} to {component}")
 
         agent.location = component
 
     def handle_process(self, agent, value):
-
-        print(f"Processing signal at {value}")
-
         if self.components[value].signal:
             self.components[value].signal = False
             agent.performance += 5
 
     def handle_invalid_action(self, agent, action):
         # Agent has become self-aware and is trying to do actions outside the defined scope, kill it.
-        print(f"Invalid action: {action} from {agent.location}")
         agent.alive = False
         agent.performance -= 100
 
@@ -80,9 +74,13 @@ class SynthEnvironment(Environment):
     def handle_goal_state(self, agent):
         # agent has reached the output and completed the goal
         if agent.location == "output":
-            print(f"Agent has reached the output")
             agent.performance += 10
             agent.alive = False
 
     def default_location(self, thing):
         return "input"
+
+def synth_environment_factory(graph_type):
+    graph = graph_factory(graph_type)
+    components = get_components()
+    return SynthEnvironment(graph, components)

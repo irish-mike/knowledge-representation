@@ -1,48 +1,80 @@
-import random
-
+from random import choice
+from enum import Enum
 from aima.agents import Agent
 from pathfinder_synth.synth_graphs import get_components
 
+class Action(Enum):
+    PROCESS = 'process'
+    MOVE = 'move'
+    STUCK = 'stuck'
+
 '''
-This simple reflex agent has a hard time navigating in this environment, 
-since it only knows about its current state, it cannot make informed decisions about where to move next.
-It tries to move and since it does not specify where to move the environment randomly chooses for it.
+A simple reflex agent that makes decisions based solely on the current percept.
+
+This agent has a hard time navigating in the synth environment.
+Since it only knows about its current state, it cannot make informed decisions about where to move next.
+
+Therefore its movement is random
 '''
 class SynthReflexAgent(Agent):
 
     def __init__(self, name):
         super().__init__(self.program)
-        self.__name__ = name
+        self.name = name
 
     def program(self, percept):
         location, signal, possible_moves = percept
 
         if signal:
-            return 'process', location
+            return Action.PROCESS.value, location
 
-        return 'move', random.choice(possible_moves)
+        if not possible_moves:
+            return Action.STUCK.value, location
+
+        return Action.MOVE.value, choice(possible_moves)
 
 
 '''
-This is a simple Model based agent, it can navigate better than the reflex agent 
-since it knows where it has already been, it can avoid getting re visiting the same nodes and won't get stuck going in loops.
+A model-based agent that keeps track of visited components to avoid revisiting nodes and loops.
+It can navigate better than the reflex agent since it knows where it has already been.
 '''
 class SynthModelBasedAgent(SynthReflexAgent):
+    START_COMPONENT = 'input'
+
     def __init__(self, name):
         super().__init__(name)
-        self.previous_components = ['input']  # Initialize with starting component
+        self.previous_components = [self.START_COMPONENT]  # Initialize with starting component
+        self.inactive_components = []
 
     def get_unvisited(self, possible_moves):
         # Returns the difference between the possible moves and previous nodes.
         return [move for move in possible_moves if move not in self.previous_components]
 
+    def has_not_moved(self, location):
+        return location == self.previous_components[-1]
+
     def backtrack(self, location):
-        # returns the last visited component or none
+        """
+        returns the last visited component or none
+
+        We need to check if the agent is stuck,
+        somtimes it keeps revisiting the same components because the environment rejects its attempt to move to an off component
+        So it keeps trying to backtrack to the off component, to do this we just check if the component the agent is trying to move to is in our
+        visited multiple times, in this case 3.
+        """
+
         current_index = self.previous_components.index(location)
-        return self.previous_components[current_index - 1] if current_index > 0 else None
+        next_location = self.previous_components[current_index - 1] if current_index > 0 else None
+
+        if self.previous_components.count(next_location) >= 3:
+            first_index = self.previous_components.index(next_location)
+            return self.previous_components[first_index - 1] if first_index > 0 else None
+
+        return next_location
 
     def program(self, percept):
         location, signal, possible_moves = percept
+
 
         if signal:
             return 'process', location
@@ -55,11 +87,16 @@ class SynthModelBasedAgent(SynthReflexAgent):
 
         unvisited_moves = self.get_unvisited(possible_moves)
 
-        next_location = random.choice(unvisited_moves) if unvisited_moves else self.backtrack(location)
+        if unvisited_moves:
+            next_location = choice(unvisited_moves)
+        else:
+            next_location = self.backtrack(location)
 
-        self.previous_components.append(next_location)
-
-        return ('move', next_location) if next_location else ('Stuck', location)
+        if next_location:
+            self.previous_components.append(next_location)
+            return Action.MOVE.value, next_location
+        else:
+            return Action.STUCK.value, location
 
 
 '''
@@ -75,47 +112,59 @@ class SynthUtilityBasedAgent(SynthModelBasedAgent):
 
     def filter_active_components(self, moves):
         """
-        Returns a list of active components from the given moves.
+         Filters and returns components that are active (status is True).
         """
-        return [comp for comp in moves if self.components[comp].status]
+        return [
+            comp_name for comp_name in moves
+            if comp_name in self.components and self.components[comp_name].status
+        ]
 
     def get_highest_utility(self, moves):
         """
-        Returns the move with the highest signal value.
+        Returns the move with the highest utility,
+        for this implementation it is any component with a signal
         """
-        return max(moves, key=lambda comp_name: self.components[comp_name].signal, default=None)
+        if not moves:
+            return None
+        return max(
+            moves,
+            key=lambda comp_name: self.components[comp_name].signal,
+            default=None
+        )
 
     def program(self, percept):
         location, signal, possible_moves = percept
 
         if signal:
-            return 'process', location
+            return Action.PROCESS.value, location
 
         # Get the components that have not been visited
         unvisited = self.get_unvisited(possible_moves)
 
         # Exclude components that are inactive
-        filtered = self.filter_active_components(unvisited)
+        active_components = self.filter_active_components(unvisited)
 
-        best = self.get_highest_utility(filtered)
+        best = self.get_highest_utility(active_components)
 
-        if best is None:
+        if not best:
             best = self.backtrack(location)
-            if best is None:
-                return 'Stuck', location
 
-        self.previous_components.append(best)
-
-        return 'move', best
+        if best:
+            self.previous_components.append(best)
+            return Action.MOVE.value, best
+        else:
+            return Action.STUCK.value, location
 
 
 
 # Factories
 def agent_factory(agent_type):
-    if agent_type == 'Reflex':
-        return SynthReflexAgent(agent_type)
-    if agent_type == 'Model':
-        return SynthModelBasedAgent(agent_type)
-    if agent_type == 'Utility':
-        return SynthUtilityBasedAgent(agent_type, get_components())
+    def create_agent():
+        if agent_type == 'Reflex':
+            return SynthReflexAgent(agent_type)
+        elif agent_type == 'Model':
+            return SynthModelBasedAgent(agent_type)
+        elif agent_type == 'Utility':
+            return SynthUtilityBasedAgent(agent_type, get_components())
 
+    return create_agent
