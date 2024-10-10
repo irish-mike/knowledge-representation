@@ -59,26 +59,56 @@ class SynthModelBasedAgent(SynthReflexAgent):
 
         self.previous_components.append(next_location)
 
-        return ('move', next_location) if next_location else 'Stuck'
+        return ('move', next_location) if next_location else ('Stuck', location)
 
 
+'''
+This Utility based agent performs best in the synth environment, 
+it can keep track of where it has already been just like the reflex agent.
+The advantage it has is that it will pick the next best moved based on what components are on and have a signal to process.
+
+'''
 class SynthUtilityBasedAgent(SynthModelBasedAgent):
-    """Utility-Based Agent with preference for certain nodes."""
-
     def __init__(self, name, components):
-        super().__init__(name, components)
+        super().__init__(name)
+        self.components = components
 
-    def get_best_neighbor(self, neighbors):
-        return max(neighbors, key=lambda n: self.components[n].utility)
+    def filter_active_components(self, moves):
+        """
+        Returns a list of active components from the given moves.
+        """
+        return [comp for comp in moves if self.components[comp].status]
 
+    def get_highest_utility(self, moves):
+        """
+        Returns the move with the highest signal value.
+        """
+        return max(moves, key=lambda comp_name: self.components[comp_name].signal, default=None)
 
     def program(self, percept):
-        moves = self.update_and_get_valid_moves(percept)
+        location, signal, possible_moves = percept
 
-        if moves:
-            return self.get_best_neighbor(moves)
-        else:
-            return self.go_back()
+        if signal:
+            return 'process', location
+
+        # Get the components that have not been visited
+        unvisited = self.get_unvisited(possible_moves)
+
+        # Exclude components that are inactive
+        filtered = self.filter_active_components(unvisited)
+
+        best = self.get_highest_utility(filtered)
+
+        if best is None:
+            best = self.backtrack(location)
+            if best is None:
+                return 'Stuck', location
+
+        self.previous_components.append(best)
+
+        return 'move', best
+
+
 
 # Factories
 def agent_factory(agent_type):

@@ -16,11 +16,11 @@ def run(graph_type, agent, steps=10000):
 # run('dead_end', agent_factory('Reflex'))
 
 # Run Model based Agent
-run('ideal_path', agent_factory('Model'))
-run('wrong_path', agent_factory('Model'))
-run('dead_end', agent_factory('Model'))
+# run('ideal_path', agent_factory('Model'))
+# run('wrong_path', agent_factory('Model'))
+# run('dead_end', agent_factory('Model'))
 #
 # # Run Utility based Agent
-# run('ideal_path', agent_factory('Utility'))
-# run('wrong_path', agent_factory('Utility'))
-# run('dead_end', agent_factory('Utility'))
+run('ideal_path', agent_factory('Utility'))
+run('wrong_path', agent_factory('Utility'))
+run('dead_end', agent_factory('Utility'))
