@@ -1,21 +1,25 @@
 from aima.agents import Agent
 from pathfinder_synth.synth_graphs import get_components
 
-
+'''
+This simple reflex agent has a hard time navigating in this environment, 
+since it only knows about its current state, it cannot make informed decisions about where to move next.
+It tries to move and since it does not specify where to move the environment randomly chooses for it.
+'''
 class SynthReflexAgent(Agent):
-    """Reflex Agent that moves to the first available neighbor that is 'on'."""
 
     def __init__(self, name, components):
         super().__init__(self.program)
         self.__name__ = name
         self.components = components
 
-    def neighbor_on(self, neighbor):
-        return self.components[neighbor].status
-
     def program(self, percept):
-        location, neighbors = percept
-        return next((n for n in neighbors if self.neighbor_on(n)), None)
+        location, signal = percept
+
+        if signal:
+            return 'process', location
+        else:
+            return 'move', None
 
 
 class SynthModelBasedAgent(SynthReflexAgent):
