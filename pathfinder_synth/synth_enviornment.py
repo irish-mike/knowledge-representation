@@ -10,7 +10,15 @@ class SynthEnvironment(Environment):
         self.graph = graph
 
     def percept(self, agent):
-        return agent.location, self.components[agent.location].signal
+
+        location = agent.location
+
+        neighbors = self.graph.get(location)
+        neighbor_nodes = list(neighbors.keys()) if neighbors else []
+
+        signal = self.components[agent.location].signal
+
+        return location, signal, neighbor_nodes
 
     def execute_action(self, agent, action):
 
@@ -27,16 +35,10 @@ class SynthEnvironment(Environment):
 
     def handle_move(self, agent, component):
 
-        # moves the agent randomly if location is nit specified
-        if component not in self.components:
-            component = self.get_random_neighbor(agent.location)
-
         # If the component is off, the environment won't let the agent through
         if not self.components[component].status:
             print(f"Component {component} is OFF, Cannot move agent")
-            agent.performance -= (
-                1  # additional penalty for trying to make an invalid move
-            )
+            agent.performance -= 1  # additional penalty for trying to make an invalid move
             return
 
         print(f"Routing signal from {agent.location} to {component}")

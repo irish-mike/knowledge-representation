@@ -1,3 +1,5 @@
+import random
+
 from aima.agents import Agent
 from pathfinder_synth.synth_graphs import get_components
 
@@ -8,57 +10,56 @@ It tries to move and since it does not specify where to move the environment ran
 '''
 class SynthReflexAgent(Agent):
 
-    def __init__(self, name, components):
+    def __init__(self, name):
         super().__init__(self.program)
         self.__name__ = name
-        self.components = components
 
     def program(self, percept):
-        location, signal = percept
+        location, signal, possible_moves = percept
 
         if signal:
             return 'process', location
-        else:
-            return 'move', None
+
+        return 'move', random.choice(possible_moves)
 
 
+'''
+This is a simple Model based agent, it can navigate better than the reflex agent 
+since it knows where it has already been, it can avoid getting re visiting the same nodes and won't get stuck going in loops.
+'''
 class SynthModelBasedAgent(SynthReflexAgent):
-    """Model-Based Agent with Backtracking."""
+    def __init__(self, name):
+        super().__init__(name)
+        self.previous_components = ['input']  # Initialize with starting component
 
-    def __init__(self, name, components):
-        super().__init__(name, components)
-        self.visited = set()
-        self.path_stack = []
+    def get_unvisited(self, possible_moves):
+        # Returns the difference between the possible moves and previous nodes.
+        return [move for move in possible_moves if move not in self.previous_components]
 
-    def is_valid_neighbor(self, neighbor):
-        return self.neighbor_on(neighbor) and neighbor not in self.visited
-
-    def get_valid_moves(self, neighbors):
-        return [neighbor for neighbor in neighbors if self.is_valid_neighbor(neighbor)]
-
-    def update_model(self, location):
-        if location not in self.visited:
-            self.visited.add(location)
-            self.path_stack.append(location)
-
-    def update_and_get_valid_moves(self, percept):
-        location, neighbors = percept
-        self.update_model(location)  # Update internal model
-        return self.get_valid_moves(neighbors)
-
-    def go_back(self):
-        if self.path_stack:
-            self.path_stack.pop()
-            if self.path_stack:
-                return self.path_stack[-1]
-        return None
+    def backtrack(self, location):
+        # returns the last visited component or none
+        current_index = self.previous_components.index(location)
+        return self.previous_components[current_index - 1] if current_index > 0 else None
 
     def program(self, percept):
-        moves = self.update_and_get_valid_moves(percept)
-        if moves:
-            return moves[0] # return the first valid move
-        else:
-            return self.go_back() # dead end retrace steps
+        location, signal, possible_moves = percept
+
+        if signal:
+            return 'process', location
+
+        """
+            If there are unvisited moves, choose randomly.
+            If no unvisited moves are available, backtrack to the previous node.
+            otherwise we are stuck
+        """
+
+        unvisited_moves = self.get_unvisited(possible_moves)
+
+        next_location = random.choice(unvisited_moves) if unvisited_moves else self.backtrack(location)
+
+        self.previous_components.append(next_location)
+
+        return ('move', next_location) if next_location else 'Stuck'
 
 
 class SynthUtilityBasedAgent(SynthModelBasedAgent):
@@ -82,9 +83,9 @@ class SynthUtilityBasedAgent(SynthModelBasedAgent):
 # Factories
 def agent_factory(agent_type):
     if agent_type == 'Reflex':
-        return SynthReflexAgent(agent_type, get_components())
+        return SynthReflexAgent(agent_type)
     if agent_type == 'Model':
-        return SynthModelBasedAgent(agent_type, get_components())
+        return SynthModelBasedAgent(agent_type)
     if agent_type == 'Utility':
         return SynthUtilityBasedAgent(agent_type, get_components())
 
