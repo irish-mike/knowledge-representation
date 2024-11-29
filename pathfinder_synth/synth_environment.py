@@ -82,5 +82,5 @@ class SynthEnvironment(Environment):
 
 def synth_environment_factory(graph_type):
     graph = graph_factory(graph_type)
-    components = get_components()
+    components = get_components(graph_type)
     return SynthEnvironment(graph, components)

@@ -1,11 +1,15 @@
 import sys
+import time
+
 import numpy as np
 from aima.search import (
     GraphProblem,
     breadth_first_graph_search, depth_first_graph_search,
     depth_limited_search, iterative_deepening_search,
-    astar_search, recursive_best_first_search, compare_searchers, InstrumentedProblem
+    astar_search, recursive_best_first_search, compare_searchers, InstrumentedProblem, breadth_first_tree_search,
+    greedy_best_first_graph_search
 )
+from aima.utils import print_table
 
 from pathfinder_synth.synth_graphs import graph_factory, get_components
 
@@ -63,45 +67,98 @@ class SynthGraphProblem(GraphProblem):
         return min_edge_cost * remaining_steps_estimate
 
 
-def compare_graph_searchers(searchers, graph_types):
+def average_search_time(problem, search_function, runs):
+    total_time = 0
+
+    for _ in range(runs):
+        # Start the timer
+        start_time = time.time()
+
+        # Perform the search
+        result = search_function(problem)
+
+        # Stop the timer
+        end_time = time.time()
+
+        # Calculate time for this run
+        total_time += (end_time - start_time)
+
+    # Calculate the average time
+    average_time = total_time / runs
+
+    return average_time
+
+def compare_graph_searchers(searchers, graph_types, runs=100):
     problems = []
-    headers = ['Searcher'] + graph_types
+    headers = ['Searcher', 'Graph Type', 'Average Nodes Expanded', 'Solution Length', 'Path Cost', 'Average Time (s)']
 
     # Create problems for each graph
     for graph_type in graph_types:
         graph = graph_factory(graph_type)
-        components = get_components()
+        components = get_components(graph_type)
         problem = SynthGraphProblem('input', 'output', graph, components)
-        problems.append(problem)
+        problems.append((graph_type, problem))  # Store graph type and problem
 
-    # Compare searchers across all problems
-    compare_searchers(problems, headers, searchers)
+    # Table to store results
+    results = []
+
+    # Iterate over each searcher and problem
+    for searcher in searchers:
+        searcher_name = searcher.__name__  # Get the searcher's name
+
+        for graph_type, problem in problems:
+            # InstrumentedProblem tracks metrics (e.g., nodes expanded)
+            inst_problem = InstrumentedProblem(problem)
+
+            # Get the average time for this searcher and problem type
+            avg_time = average_search_time(inst_problem, searcher, runs=runs)
+
+            # Run the search once to collect other metrics (nodes expanded, etc.)
+            search_result = searcher(inst_problem)
+
+            # Collect metrics: nodes expanded and solution length
+            nodes_expanded = int(inst_problem.succs / runs)  # Average Number of nodes expanded
+            solution_length = len(search_result.solution()) if search_result else 'N/A'  # Solution length
+
+            # Calculate path cost if a solution exists
+            if search_result:
+                path_cost = search_result.path_cost  # Assuming Node.path_cost stores the total cost
+            else:
+                path_cost = 'N/A'
+
+            # Append a row of results
+            results.append([searcher_name, graph_type, nodes_expanded, solution_length, path_cost, f"{avg_time:.6f} seconds"])
+
+    # Print the results table
+    print_table(results, headers)
 
 
 # Define named search functions
-def depth_limited_search_custom(p):
-    return depth_limited_search(p, limit=15)
+def depth_limited_search_factory(p):
+    return depth_limited_search(p, limit=7)
 
-
-def astar_search_custom(p):
+def astar_search_factory(p):
     return astar_search(p, h=p.h)
 
+def greedy_best_first_graph_search_factory(p):
+    return greedy_best_first_graph_search(p, f=p.h)
 
-def rbfs_search_custom(p):
+def recursive_best_first_search_search_factory(p):
     return recursive_best_first_search(p, h=p.h)
-
 
 # Search algorithms to compare
 searchers = [
     breadth_first_graph_search,
     depth_first_graph_search,
-    depth_limited_search_custom,
-    iterative_deepening_search,
-    astar_search_custom,
-    rbfs_search_custom
+    depth_limited_search_factory,
+    greedy_best_first_graph_search_factory,
+    recursive_best_first_search_search_factory,
+    astar_search_factory,
 ]
 
 # Graph types to compare
 graph_types = ['ideal_path', 'wrong_path', 'dead_end']
 
+# Compare the searchers and print the results
 compare_graph_searchers(searchers, graph_types)
+

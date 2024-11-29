@@ -2,37 +2,8 @@ from matplotlib import pyplot as plt
 
 from aima.agents import compare_agents
 from pathfinder_synth.synth_agents import agent_factory
-from pathfinder_synth.synth_environment import SynthEnvironment, synth_environment_factory
-from pathfinder_synth.synth_graphs import graph_factory, get_components
+from pathfinder_synth.synth_environment import synth_environment_factory
 
-
-def run(graph_type, agent, steps=10000):
-    print(f"\nRunning {agent.name} on {graph_type}")
-    graph = graph_factory(graph_type)
-    env = SynthEnvironment(graph, get_components())
-    env.add_thing(agent)
-    env.run(steps)
-
-# # Run Reflex Agent
-# run('ideal_path', agent_factory('Reflex'))
-# run('wrong_path', agent_factory('Reflex'))
-# run('dead_end', agent_factory('Reflex'))
-
-# Run Model based Agent
-# run('ideal_path', agent_factory('Model'))
-# run('wrong_path', agent_factory('Model'))
-# run('dead_end', agent_factory('Model'))
-# #
-# # # Run Utility based Agent
-# run('ideal_path', agent_factory('Utility'))
-# run('wrong_path', agent_factory('Utility'))
-# run('dead_end', agent_factory('Utility'))
-
-agent_factories = [
-    agent_factory('Reflex'),
-    agent_factory('Model'),
-    agent_factory('Utility'),
-]
 
 
 def run_agent_comparison():
@@ -44,7 +15,14 @@ def run_agent_comparison():
     print("-" * 60)
 
     for graph_type in graph_types:
-        results = compare_agents(lambda: synth_environment_factory(graph_type), agent_factories, n=10, steps=1000)
+
+        agent_factories = [
+            agent_factory('Reflex', graph_type),
+            agent_factory('Model', graph_type),
+            agent_factory('Utility', graph_type),
+        ]
+
+        results = compare_agents(lambda: synth_environment_factory(graph_type), agent_factories, n=10, steps=10000)
 
         # Loop through the results and print each agent's name and average score
         for agent_factory_func, avg_score in results:
@@ -52,13 +30,8 @@ def run_agent_comparison():
             # Neatly formatted output with fixed-width columns
             print(f"{agent_instance.name:<25} {graph_type:<20} {avg_score:<15.2f}")
 
-
-run_agent_comparison()
-
-
 # This code has been adapted from the code provided by Ruairí D. O’Reilly's solution for lab 2
 def run_agent_comparison_visualise_results():
-
     graph_types = ['ideal_path', 'wrong_path', 'dead_end']
     agent_names = ['SynthReflexAgent', 'SynthModelBasedAgent', 'SynthUtilityBasedAgent']
     agent_colors = {'SynthReflexAgent': 'r', 'SynthModelBasedAgent': 'b', 'SynthUtilityBasedAgent': 'g'}
@@ -74,6 +47,13 @@ def run_agent_comparison_visualise_results():
 
     # Run comparisons and collect results
     for graph_type in graph_types:
+        # Define agent_factories inside this function
+        agent_factories = [
+            agent_factory('Reflex', graph_type),
+            agent_factory('Model', graph_type),
+            agent_factory('Utility', graph_type),
+        ]
+
         for steps in step_sizes:
             results = compare_agents(
                 lambda: synth_environment_factory(graph_type),
@@ -81,10 +61,11 @@ def run_agent_comparison_visualise_results():
                 n=10,
                 steps=steps
             )
-            for agent_factory, avg_score in results:
-                agent_name = agent_factory().__class__.__name__
+            for agent_factory_func, avg_score in results:
+                agent_name = agent_factory_func().__class__.__name__
                 performance_results[agent_name][graph_type].append(avg_score)
 
+    # Plotting the results
     plt.figure(figsize=(12, 8))
     for agent_name in agent_names:
         for graph_type in graph_types:
@@ -107,4 +88,8 @@ def run_agent_comparison_visualise_results():
     plt.show()
 
 
+run_agent_comparison()
+
 run_agent_comparison_visualise_results()
+
+

@@ -1,0 +1,81 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36" version="24.9.0">
+  <diagram id="RAw8fGnVSSGqqaElOtJ0" name="Page-1">
+    <mxGraphModel dx="1434" dy="621" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="EconomyStrength" value="Economy Strength" style="ellipse;whiteSpace=wrap;html=1;fillColor=#dae8fc;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="1" vertex="1">
+          <mxGeometry x="120" y="40" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="TechInnovation" value="Tech Innovation" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="1" vertex="1">
+          <mxGeometry x="120" y="200" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="CleanEnergyAdoption" value="Clean Energy Adoption" style="ellipse;whiteSpace=wrap;html=1;fillColor=#e1d5e7;" parent="1" vertex="1">
+          <mxGeometry x="434" y="350" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="EcologicalFootprint" value="Ecological Footprint" style="ellipse;whiteSpace=wrap;html=1;fillColor=#ffe6cc;" parent="1" vertex="1">
+          <mxGeometry x="640" y="200" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="e1" value="drives" parent="1" source="EconomyStrength" target="TechInnovation" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" value="allows" parent="1" source="EconomyStrength" target="Urbanisation" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" value="strengthens" parent="1" source="EconomyStrength" target="JobMarket" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" value="encourages" parent="1" source="GovernmentPolicy" target="TechInnovation" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" value="necessitates" parent="1" source="GovernmentPolicy" target="CleanEnergyAdoption" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" value="facilitates" parent="1" source="TechInnovation" target="CleanEnergyAdoption" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" value="strengthens" parent="1" source="TechInnovation" target="JobMarket" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" value="Increases" parent="1" source="Urbanisation" target="EcologicalFootprint" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" value="reduces" parent="1" source="CleanEnergyAdoption" target="CarbonEmissions" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e12" value="impacts" parent="1" source="CarbonEmissions" target="EcologicalFootprint" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Fj9tLoJUxA9efl6AirLg-4" value="" style="group" vertex="1" connectable="0" parent="1">
+          <mxGeometry x="120" y="40" width="434" height="370" as="geometry" />
+        </mxCell>
+        <mxCell id="GovernmentPolicy" value="Government Policy" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f8cecc;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="Fj9tLoJUxA9efl6AirLg-4" vertex="1">
+          <mxGeometry y="310" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="Urbanisation" value="Urbanisation" style="ellipse;whiteSpace=wrap;html=1;fillColor=#fff2cc;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="Fj9tLoJUxA9efl6AirLg-4" vertex="1">
+          <mxGeometry x="314" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="CarbonEmissions" value="Carbon Emissions" style="ellipse;whiteSpace=wrap;html=1;fillColor=#f5f5f5;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;" parent="Fj9tLoJUxA9efl6AirLg-4" vertex="1">
+          <mxGeometry x="314" y="160" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="JobMarket" value="Job Market" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d9d2e9;movable=1;resizable=1;rotatable=1;deletable=1;editable=1;locked=0;connectable=1;points=[[0,0,0,0,0],[0,0.5,0,0,0],[0,1,0,0,0],[0.5,0,0,0,0],[0.5,1,0,0,0],[1,0,0,0,0],[1,0.5,0,0,0],[1,1,0,0,0]];" parent="Fj9tLoJUxA9efl6AirLg-4" vertex="1">
+          <mxGeometry x="150" y="80" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" value="increases" parent="Fj9tLoJUxA9efl6AirLg-4" source="Urbanisation" target="CarbonEmissions" edge="1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Fj9tLoJUxA9efl6AirLg-1" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.9;exitY=0.183;exitDx=0;exitDy=0;exitPerimeter=0;entryX=0;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="Fj9tLoJUxA9efl6AirLg-4" source="JobMarket" target="Urbanisation">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="350" y="310" as="sourcePoint" />
+            <mxPoint x="400" y="260" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Fj9tLoJUxA9efl6AirLg-3" value="necessitates" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];movable=0;rotatable=0;deletable=0;editable=0;locked=1;connectable=0;" vertex="1" connectable="0" parent="Fj9tLoJUxA9efl6AirLg-1">
+          <mxGeometry x="-0.0058" y="-1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

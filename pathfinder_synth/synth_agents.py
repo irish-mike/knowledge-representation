@@ -158,13 +158,13 @@ class SynthUtilityBasedAgent(SynthModelBasedAgent):
 
 
 # Factories
-def agent_factory(agent_type):
+def agent_factory(agent_type, graph_type):
     def create_agent():
         if agent_type == 'Reflex':
             return SynthReflexAgent(agent_type)
         elif agent_type == 'Model':
             return SynthModelBasedAgent(agent_type)
         elif agent_type == 'Utility':
-            return SynthUtilityBasedAgent(agent_type, get_components())
+            return SynthUtilityBasedAgent(agent_type, get_components(graph_type))
 
     return create_agent

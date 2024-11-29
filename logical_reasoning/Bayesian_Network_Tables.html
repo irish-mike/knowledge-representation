@@ -1,0 +1,427 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bayesian Network Tables</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+        h1, h2 {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .table-container {
+            width: 80%;
+            margin: 20px auto;
+            overflow-x: auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+    </style>
+</head>
+<body>
+    <h1>Bayesian Network Tables</h1>
+
+    <div class="table-container">
+        <h2>Economy Strength</h2>
+        <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Economy Strength</th>
+      <th>Probability</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Strong</td>
+      <td>0.6</td>
+    </tr>
+    <tr>
+      <td>Weak</td>
+      <td>0.4</td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+    
+    <div class="table-container">
+        <h2>Urbanisation</h2>
+        <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Economy Strength</th>
+      <th>Job Market</th>
+      <th>Urbanisation</th>
+      <th>Probability</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Strong</td>
+      <td>Strong</td>
+      <td>High</td>
+      <td>0.8</td>
+    </tr>
+    <tr>
+      <td>Strong</td>
+      <td>Strong</td>
+      <td>Low</td>
+      <td>0.2</td>
+    </tr>
+    <tr>
+      <td>Strong</td>
+      <td>Weak</td>
+      <td>High</td>
+      <td>0.6</td>
+    </tr>
+    <tr>
+      <td>Strong</td>
+      <td>Weak</td>
+      <td>Low</td>
+      <td>0.4</td>
+    </tr>
+    <tr>
+      <td>Weak</td>
+      <td>Strong</td>
+      <td>High</td>
+      <td>0.5</td>
+    </tr>
+    <tr>
+      <td>Weak</td>
+      <td>Strong</td>
+      <td>Low</td>
+      <td>0.5</td>
+    </tr>
+    <tr>
+      <td>Weak</td>
+      <td>Weak</td>
+      <td>High</td>
+      <td>0.3</td>
+    </tr>
+    <tr>
+      <td>Weak</td>
+      <td>Weak</td>
+      <td>Low</td>
+      <td>0.7</td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+    
+    <div class="table-container">
+        <h2>Job Market</h2>
+        <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Economy Strength</th>
+      <th>Tech Innovation</th>
+      <th>Job Market</th>
+      <th>Probability</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Strong</td>
+      <td>High</td>
+      <td>Strong</td>
+      <td>0.95</td>
+    </tr>
+    <tr>
+      <td>Strong</td>
+      <td>High</td>
+      <td>Weak</td>
+      <td>0.05</td>
+    </tr>
+    <tr>
+      <td>Strong</td>
+      <td>Low</td>
+      <td>Strong</td>
+      <td>0.80</td>
+    </tr>
+    <tr>
+      <td>Strong</td>
+      <td>Low</td>
+      <td>Weak</td>
+      <td>0.20</td>
+    </tr>
+    <tr>
+      <td>Weak</td>
+      <td>High</td>
+      <td>Strong</td>
+      <td>0.60</td>
+    </tr>
+    <tr>
+      <td>Weak</td>
+      <td>High</td>
+      <td>Weak</td>
+      <td>0.40</td>
+    </tr>
+    <tr>
+      <td>Weak</td>
+      <td>Low</td>
+      <td>Strong</td>
+      <td>0.40</td>
+    </tr>
+    <tr>
+      <td>Weak</td>
+      <td>Low</td>
+      <td>Weak</td>
+      <td>0.60</td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+    
+    <div class="table-container">
+        <h2>Tech Innovation</h2>
+        <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Economy Strength</th>
+      <th>Government Policy</th>
+      <th>Tech Innovation</th>
+      <th>Probability</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Strong</td>
+      <td>Supportive</td>
+      <td>High</td>
+      <td>0.85</td>
+    </tr>
+    <tr>
+      <td>Strong</td>
+      <td>Supportive</td>
+      <td>Low</td>
+      <td>0.15</td>
+    </tr>
+    <tr>
+      <td>Strong</td>
+      <td>Unsupportive</td>
+      <td>High</td>
+      <td>0.70</td>
+    </tr>
+    <tr>
+      <td>Strong</td>
+      <td>Unsupportive</td>
+      <td>Low</td>
+      <td>0.30</td>
+    </tr>
+    <tr>
+      <td>Weak</td>
+      <td>Supportive</td>
+      <td>High</td>
+      <td>0.40</td>
+    </tr>
+    <tr>
+      <td>Weak</td>
+      <td>Supportive</td>
+      <td>Low</td>
+      <td>0.60</td>
+    </tr>
+    <tr>
+      <td>Weak</td>
+      <td>Unsupportive</td>
+      <td>High</td>
+      <td>0.20</td>
+    </tr>
+    <tr>
+      <td>Weak</td>
+      <td>Unsupportive</td>
+      <td>Low</td>
+      <td>0.80</td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+    
+    <div class="table-container">
+        <h2>Clean Energy Adoption</h2>
+        <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Government Policy</th>
+      <th>Tech Innovation</th>
+      <th>Clean Energy Adoption</th>
+      <th>Probability</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Supportive</td>
+      <td>High</td>
+      <td>High</td>
+      <td>0.9</td>
+    </tr>
+    <tr>
+      <td>Supportive</td>
+      <td>High</td>
+      <td>Low</td>
+      <td>0.1</td>
+    </tr>
+    <tr>
+      <td>Supportive</td>
+      <td>Low</td>
+      <td>High</td>
+      <td>0.6</td>
+    </tr>
+    <tr>
+      <td>Supportive</td>
+      <td>Low</td>
+      <td>Low</td>
+      <td>0.4</td>
+    </tr>
+    <tr>
+      <td>Unsupportive</td>
+      <td>High</td>
+      <td>High</td>
+      <td>0.5</td>
+    </tr>
+    <tr>
+      <td>Unsupportive</td>
+      <td>High</td>
+      <td>Low</td>
+      <td>0.5</td>
+    </tr>
+    <tr>
+      <td>Unsupportive</td>
+      <td>Low</td>
+      <td>High</td>
+      <td>0.3</td>
+    </tr>
+    <tr>
+      <td>Unsupportive</td>
+      <td>Low</td>
+      <td>Low</td>
+      <td>0.7</td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+    
+    <div class="table-container">
+        <h2>Carbon Emissions</h2>
+        <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Urbanisation</th>
+      <th>Clean Energy Adoption</th>
+      <th>Carbon Emissions</th>
+      <th>Probability</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>High</td>
+      <td>High</td>
+      <td>High</td>
+      <td>0.5</td>
+    </tr>
+    <tr>
+      <td>High</td>
+      <td>High</td>
+      <td>Low</td>
+      <td>0.5</td>
+    </tr>
+    <tr>
+      <td>High</td>
+      <td>Low</td>
+      <td>High</td>
+      <td>0.8</td>
+    </tr>
+    <tr>
+      <td>High</td>
+      <td>Low</td>
+      <td>Low</td>
+      <td>0.2</td>
+    </tr>
+    <tr>
+      <td>Low</td>
+      <td>High</td>
+      <td>High</td>
+      <td>0.3</td>
+    </tr>
+    <tr>
+      <td>Low</td>
+      <td>High</td>
+      <td>Low</td>
+      <td>0.7</td>
+    </tr>
+    <tr>
+      <td>Low</td>
+      <td>Low</td>
+      <td>High</td>
+      <td>0.6</td>
+    </tr>
+    <tr>
+      <td>Low</td>
+      <td>Low</td>
+      <td>Low</td>
+      <td>0.4</td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+    
+    <div class="table-container">
+        <h2>Ecological Footprint</h2>
+        <table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>Carbon Emissions</th>
+      <th>Urbanisation</th>
+      <th>Ecological Footprint</th>
+      <th>Probability</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>High</td>
+      <td>High</td>
+      <td>High</td>
+      <td>0.9</td>
+    </tr>
+    <tr>
+      <td>High</td>
+      <td>Low</td>
+      <td>High</td>
+      <td>0.7</td>
+    </tr>
+    <tr>
+      <td>Low</td>
+      <td>High</td>
+      <td>High</td>
+      <td>0.4</td>
+    </tr>
+    <tr>
+      <td>Low</td>
+      <td>Low</td>
+      <td>Low</td>
+      <td>0.2</td>
+    </tr>
+  </tbody>
+</table>
+    </div>
+    
+</body>
+</html>

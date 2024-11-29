@@ -21,14 +21,16 @@ class MissionariesAndCannibals(Problem):
 
     def actions(self, state):
         direction = self._get_direction(state[2])  # Get direction based on boat position
-        return [
+        moves =  [
             move for move in self.possible_moves
             if self._is_action_valid(state, move, direction)
         ]
+        return moves
 
     def result(self, state, action):
         direction = self._get_direction(state[2])  # Get direction based on boat position
-        return self._apply_action(state, action, direction)
+        result_of_action = self._apply_action(state, action, direction)
+        return result_of_action
 
     def goal_test(self, state):
         return state == self.goal
